@@ -2,12 +2,13 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Logo from "@/components/logo";
-import { fetchMealtypes } from "@/lib/data";
+import { fetchLocations, fetchMealtypes } from "@/lib/data";
 
 import Mealtype from "@/components/Mealtype";
 
 export default async function Home() {
   const mealtypes = await fetchMealtypes();
+  const locations = await fetchLocations();
 
   return (
     <div className="w-full">
@@ -65,7 +66,7 @@ export default async function Home() {
       </div>
 
       {/* main */}
-      <main className="w-full my-9 md:my-12">
+      <main className=" w-full my-9 md:my-12">
         <div className="w-10/12 mx-auto flex flex-col">
           <h2 className=" font-bold text-2xl text-myHeadings md:text-3xl">
             Quick Searches

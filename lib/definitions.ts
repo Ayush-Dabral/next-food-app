@@ -4,3 +4,5 @@ export type Mealtype = {
     content: string;
     image: string;
 };
+
+export type Location = {location: string};

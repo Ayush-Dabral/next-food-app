@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 interface mealtype {
   key: number;
@@ -20,7 +21,10 @@ interface mealtype {
 
 const Mealtype = ({ key, name, content, imageURL }: mealtype) => {
   return (
-    <div key={key} className="h-40 flex flex-row shadow-lg ">
+    <Link
+    href="/login"
+    key={key}>
+    <div key={key} className="h-40  flex flex-row shadow-lg hover:bg-slate-100 hover:shadow-2xl">
       <div className=" aspect-square">
         <Image
           src={`/${imageURL}`}
@@ -35,6 +39,7 @@ const Mealtype = ({ key, name, content, imageURL }: mealtype) => {
         <p className=" w-10/12 mx-auto text-myDescriptions text-sm">{content}</p>
       </div>
     </div>
+    </Link>
   );
 };
 
