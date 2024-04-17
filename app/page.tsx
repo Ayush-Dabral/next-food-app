@@ -2,13 +2,12 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Logo from "@/components/logo";
-import { fetchLocations, fetchMealtypes } from "@/lib/data";
-
+import { fetchMealtypes } from "@/lib/data";
 import Mealtype from "@/components/Mealtype";
+
 
 export default async function Home() {
   const mealtypes = await fetchMealtypes();
-  const locations = await fetchLocations();
 
   return (
     <div className="w-full">
@@ -77,13 +76,13 @@ export default async function Home() {
 
           {/* cuisines */}
           <div className=" grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
-            {mealtypes.map((restaurant) => (
+            {mealtypes.map((mealtype) => (
               <Mealtype
-                key={restaurant.id}
-                name={restaurant.name}
-                content={restaurant.content}
-                imageURL={restaurant.image}
-              />
+                key={mealtype.id}
+                mealtype={mealtype.mealtype}
+                content={mealtype.content}
+                imageURL = {mealtype.image}
+                />
             ))}
           </div>
         </div>

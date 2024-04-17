@@ -1,6 +1,6 @@
 export type Mealtype = {
     id: number;
-    name: string;
+    mealtype: string;
     content: string;
     image: string;
 };

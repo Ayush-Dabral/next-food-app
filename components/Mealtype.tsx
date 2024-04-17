@@ -12,14 +12,14 @@ import { Button } from "./ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
-interface mealtype {
+interface mealtypes {
   key: number;
-  name: string;
+  mealtype: string;
   content: string;
   imageURL: string;
 }
 
-const Mealtype = ({ key, name, content, imageURL }: mealtype) => {
+const Mealtype = ({ key, mealtype, content, imageURL }: mealtypes) => {
   return (
     <Link
     href="/login"
@@ -31,11 +31,11 @@ const Mealtype = ({ key, name, content, imageURL }: mealtype) => {
           width={471}
           height={320}
           className=" aspect-square object-cover  object-center"
-          alt={`Cover photo of ${name}`}
+          alt={`Cover photo of ${mealtype}`}
         />
       </div>
       <div className=" flex flex-col justify-center">
-        <h3 className=" w-10/12 mx-auto text-myHeadings text-lg font-semibold">{name}</h3>
+        <h3 className=" w-10/12 mx-auto text-myHeadings text-lg font-semibold">{mealtype}</h3>
         <p className=" w-10/12 mx-auto text-myDescriptions text-sm">{content}</p>
       </div>
     </div>

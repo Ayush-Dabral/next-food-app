@@ -3,7 +3,7 @@ import { Location, Mealtype } from './definitions';
 
 export async function fetchMealtypes() {
     try {
-        const data = await sql<Mealtype>`SELECT * FROM mealtype`;
+        const data = await sql<Mealtype>`SELECT * FROM mealtypes`;
         return data.rows;
     } catch (error) {
         console.error('Database Error:', error);
