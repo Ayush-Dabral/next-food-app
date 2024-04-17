@@ -4,8 +4,53 @@ const {
   locations,
   mealtypes,
   users,
+  cityList
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
+
+async function seedCities(client, cities) {
+  try {
+    // Ensure the "uuid-ossp" extension is enabled
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+    // Create the "cities" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS cities (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        name VARCHAR(50) NOT NULL,
+        state VARCHAR(50) NOT NULL
+      );
+    `;
+
+    console.log(`Created "cities" table`);
+
+    // Insert data into the "cities" table
+    const insertedCities = await Promise.all(
+      cityList.map(async (selectedState) => {
+        const stateName = selectedState.state;
+        return Promise.all(
+          selectedState.cities.map(async (city) => {
+            await client.sql`
+              INSERT INTO cities (name, state)
+              VALUES (${city}, ${stateName});
+            `;
+          })
+        );
+      })
+    );
+
+    console.log(`Seeded ${insertedCities.length} cities`);
+
+    return {
+      createTable,
+      cities: insertedCities,
+    };
+  } catch (error) {
+    console.error('Error seeding cities:', error);
+    throw error;
+  }
+}
+
 
 async function seedUsers(client) {
   try {
@@ -48,14 +93,13 @@ async function seedUsers(client) {
 
 async function seedLocations(client) {
   try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
     // Create the "invoices" table if it doesn't exist
     const createTable = await client.sql`
     CREATE TABLE IF NOT EXISTS locations (
-    id INT PRIMARY KEY,
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    city_id INT NOT NULL,
-    location_id INT NOT NULL,
-    country_name VARCHAR(255) NOT NULL
+    state_id UUID REFERENCES states(id)
   );
 `;
 
@@ -181,13 +225,14 @@ async function seedRestaurants(client) {
 
 async function seedMealtype(client) {
   try {
-    // Create the "revenue" table if it doesn't exist
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // Create the "users" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS mealtype (
-        int INT NOT NULL PRIMARY KEY,
-        name VARCHAR(20) NOT NULL,
-        content VARCHAR(255) NOT NULL,
-        image VARCHAR(20) NOT NULL,
+      CREATE TABLE IF NOT EXISTS mealtypes (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        mealtype VARCHAR(30) NOT NULL,
+        content TEXT NOT NULL,
+        image VARCHAR(50) NOT NULL
       );
     `;
 
@@ -197,8 +242,8 @@ async function seedMealtype(client) {
     const insertedMealtype = await Promise.all(
       mealtypes.map(
         (rev) => client.sql`
-        INSERT INTO mealtype (id, name, content, image)
-        VALUES (${rev['_id']}, ${rev.name}, ${rev.content}, ${rev.image})
+        INSERT INTO mealtypes (mealtype, content, image)
+        VALUES (${rev.name}, ${rev.content}, ${rev.image})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),
@@ -229,7 +274,7 @@ async function hi(client) {
 async function main() {
   const client = await db.connect();
   
-  await hi(client);
+  await seedMealtype(client);
 
   await client.end();
 }
