@@ -1,11 +1,11 @@
 "use client"
 
-// import { RestaurantCombobox } from "./Combobox";
+import { RestaurantCombobox } from "./Combobox";
 
-const RestaurantAutocomplete = () => {
+const RestaurantAutocomplete = ({restaurantList}: any) => {
     return ( 
-        <div>
-            {/* <RestaurantCombobox search="restaurant" location="" List={[]}/> */}
+        <div className=" w-full">
+            <RestaurantCombobox restaurantList={restaurantList}/>
         </div>
      );
 }

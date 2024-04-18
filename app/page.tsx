@@ -2,13 +2,14 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Logo from "@/components/logo";
-import { fetchLocations, fetchMealtypes } from "@/lib/data";
+import { fetchLocations, fetchMealtypes, fetchRestaurants } from "@/lib/data";
 import Mealtype from "@/components/Mealtype";
 import SearchItems from "@/components/SearchItems";
 
 export default async function Home() {
   const mealtypes = await fetchMealtypes();
   const locations = await fetchLocations();
+  const restaurants = await fetchRestaurants();
 
   return (
     <div className="w-full">
@@ -54,7 +55,7 @@ export default async function Home() {
             </h1>
 
             {/* search section */}
-            <SearchItems locationsList = {locations} />
+            <SearchItems locationsList = {locations} restaurantList = {restaurants} />
             
           </div>
         </div>

@@ -8,31 +8,30 @@ const {
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
-async function seedCities(client, cities) {
+async function seedCities(client) {
   try {
     // Ensure the "uuid-ossp" extension is enabled
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
     // Create the "cities" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS cities (
-        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        name VARCHAR(50) NOT NULL,
-        state VARCHAR(50) NOT NULL
-      );
+    CREATE TABLE IF NOT EXISTS cuisines (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      cuisine VARCHAR(255) NOT NULL,
+      restaurant_id UUID REFERENCES restaurants(id)
+    )
     `;
 
     console.log(`Created "cities" table`);
 
     // Insert data into the "cities" table
     const insertedCities = await Promise.all(
-      cityList.map(async (selectedState) => {
-        const stateName = selectedState.state;
+      restaurants.map(async (res) => {
+        const resname = res.name;
         return Promise.all(
-          selectedState.cities.map(async (city) => {
+          res.Cuisine.map(async (cuisine) => {
             await client.sql`
-              INSERT INTO cities (name, state)
-              VALUES (${city}, ${stateName});
+            INSERT INTO cuisines (cuisine, restaurant_id) VALUES (${cuisine.name}, (Select id from restaurants where restaurant_name = ${resname}))
             `;
           })
         );
@@ -147,105 +146,95 @@ async function seedLocations(client) {
 
 async function seedRestaurants(client) {
   try {
-    // Create the "restaurants" table if it doesn't exist
-    const createTable = await client.query(`
+    // Create restaurants table
+    await client.query(`
       CREATE TABLE IF NOT EXISTS restaurants (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        city_name VARCHAR(255) NOT NULL,
-        city INT NOT NULL,
-        area INT NOT NULL,
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        restaurant_name VARCHAR(255) NOT NULL,
         locality VARCHAR(255) NOT NULL,
         thumb VARCHAR(255) NOT NULL,
         cost INT NOT NULL,
         contact_number VARCHAR(255),
         address TEXT NOT NULL
-      );
+      )
     `);
 
-    // Create the "meal_type" table if it doesn't exist
+    // Create restaurant_mealtypes table
     await client.query(`
-      CREATE TABLE IF NOT EXISTS meal_type (
-        id SERIAL PRIMARY KEY,
-        restaurant_id INT REFERENCES restaurants(id),
-        mealtype INT NOT NULL,
-        name VARCHAR(255) NOT NULL
-      );
+      CREATE TABLE IF NOT EXISTS restaurant_mealtypes (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        mealtype_id UUID REFERENCES mealtypes(id),
+        restaurant_id UUID REFERENCES restaurants(id)
+      )
     `);
 
-    // Create the "cuisine" table if it doesn't exist
+    // Create cuisine table
     await client.query(`
       CREATE TABLE IF NOT EXISTS cuisine (
-        id SERIAL PRIMARY KEY,
-        restaurant_id INT REFERENCES restaurants(id),
-        cuisine INT NOT NULL,
-        name VARCHAR(255) NOT NULL
-      );
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        cuisine VARCHAR(255) NOT NULL,
+        restaurant_id UUID REFERENCES restaurants(id)
+      )
     `);
 
-    console.log(`Created "restaurants", "meal_type", and "cuisine" tables`);
+    // Seed restaurants
+    for (const restaurant of restaurants) {
+      const { name, locality, thumb, cost, contact_number, address} = restaurant;
 
-    // Insert data into the "restaurants" table
-    const insertedRestaurants = await Promise.all(
-      restaurants.map(async (restaurant) => {
-        const { _id, name, city_name, city, area, locality, thumb, cost, contact_number, address, type, Cuisine } = restaurant;
+      // Insert restaurant into restaurants table
+      const restaurantResult = await client.query(
+        `INSERT INTO restaurants (restaurant_name, locality, thumb, cost, contact_number, address) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
+        [name, locality, thumb, cost, contact_number, address]
+      );
 
-        try {
-          // Insert restaurant information into the "restaurants" table
-          const restaurantQuery = `
-            INSERT INTO restaurants (id, name, city_name, city, area, locality, thumb, cost, contact_number, address)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-            ON CONFLICT (id) DO NOTHING;
-          `;
-          await client.query(restaurantQuery, [_id, name, city_name, city, area, locality, thumb, cost, contact_number, address]);
+      // const restaurantId = restaurantResult.rows[0].id;
 
-          // Insert type information into the "meal_type" table
-          await Promise.all(
-            type.map(async (typeItem) => {
-              const typeQuery = `
-                INSERT INTO meal_type (restaurant_id, mealtype, name)
-                VALUES ($1, $2, $3);
-              `;
-              await client.query(typeQuery, [_id, typeItem.mealtype, typeItem.name]);
-            })
-          );
+      // // Insert meal types into restaurant_mealtypes table
+      // for (const mealType of type) {
+      //   // Fetch the meal type ID from the mealtypes table
+      //   const mealTypeIdResult = await client.query(
+      //     `SELECT id FROM mealtypes WHERE mealtype = $1`,
+      //     [mealType.name] // Assuming mealType.name contains the meal type name
+      //   );
 
-          // Insert cuisine information into the "cuisine" table
-          await Promise.all(
-            Cuisine.map(async (cuisineItem) => {
-              const cuisineQuery = `
-                INSERT INTO cuisine (restaurant_id, cuisine, name)
-                VALUES ($1, $2, $3);
-              `;
-              await client.query(cuisineQuery, [_id, cuisineItem.cuisine, cuisineItem.name]);
-            })
-          );
+      //   // Check if any rows were returned
+      //   if (mealTypeIdResult.rows.length > 0) {
+      //     const mealTypeId = mealTypeIdResult.rows[0].id;
 
-          console.log(`Inserted restaurant with ID ${_id}`);
-        } catch (error) {
-          console.error(`Error inserting restaurant with ID ${_id}:`, error);
-        }
-      })
-    );
+      //     // Insert into restaurant_mealtypes table
+      //     await client.query(
+      //       `INSERT INTO restaurant_mealtypes (mealtype_id, restaurant_id) VALUES ($1, $2)`,
+      //       [mealTypeId, restaurantId]
+      //     );
+      //   } else {
+      //     console.error(`Meal type "${mealType.name}" not found.`);
+      //   }
+      // }
 
-    console.log(`Seeded ${insertedRestaurants.length} restaurants`);
+      // Insert cuisine into cuisine table
+      // for (const cuisineType of Cuisine) {
+      //   await client.query(
+          `INSERT INTO cuisine (cuisine, restaurant_id) VALUES ($1, $2)`,
+          [cuisineType.name, restaurantId]
+      //   );
+      // }
+    }
 
-    return {
-      createTable,
-      restaurants: insertedRestaurants,
-    };
+    console.log('Database seeding completed successfully.');
   } catch (error) {
-    console.error('Error seeding restaurants:', error);
-    throw error;
+    console.error('Error seeding database:', error);
   }
 }
+
+
+
 
 async function seedMealtype(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
     // Create the "users" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS mealtypes (
+      CREATE TABLE IF NOT EXISTS restaurant_mealtypes (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         mealtype VARCHAR(30) NOT NULL,
         content TEXT NOT NULL,
@@ -257,8 +246,8 @@ async function seedMealtype(client) {
 
     // Insert data into the "revenue" table
     const insertedMealtype = await Promise.all(
-      mealtypes.map(
-        (rev) => client.sql`
+      restaurants.map(
+        (res) => client.sql`
         INSERT INTO mealtypes (mealtype, content, image)
         VALUES (${rev.name}, ${rev.content}, ${rev.image})
         ON CONFLICT (id) DO NOTHING;
@@ -291,7 +280,8 @@ async function hi(client) {
 async function main() {
   const client = await db.connect();
   
-  await seedLocations(client);
+  // await seedRestaurants(client);
+  await seedCities(client);
 
   await client.end();
 }
