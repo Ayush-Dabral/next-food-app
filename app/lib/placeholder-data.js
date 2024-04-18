@@ -17,7 +17,7 @@ const restaurants = [
     locality: "Pitampura, New Delhi",
     thumb: "https://b.zmtcdn.com/data/pictures/chains/3/6303/640252389ddc3f264dd0e9f2741e73cd.jpg",
     cost: 450,
-    contact_number: "45352465",
+    contact_number: "45352462",
     address: "Shop 1, Plot D,  Pitampura, New Delhi Complex, Chincholi, Delhi-110006, Delhi",
     type: [
       {

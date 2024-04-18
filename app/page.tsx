@@ -4,6 +4,13 @@ import Link from "next/link";
 import Logo from "@/components/logo";
 import { fetchMealtypes } from "@/lib/data";
 import Mealtype from "@/components/Mealtype";
+import LocationAutocomplete from "@/components/LocationAutocomplete";
+import RestaurantAutocomplete from "@/components/RestaurantAutocomplete";
+import { useSelector } from "react-redux";
+import { LocationState } from "@/lib/features/location/locationSlice";
+import SearchItems from "@/components/SearchItems";
+
+
 
 
 export default async function Home() {
@@ -27,7 +34,7 @@ export default async function Home() {
           alt="Screenshot of the dashboard project showing mobile version"
         />
         <div className="relative bg-gradient-to-t from-red-950 to-transparent w-full h-full">
-          <div className=" w-full h-full my-auto flex flex-col items-center justify-center">
+          <div className=" w-full h-full my-auto flex flex-col items-center justify-evenly">
             {/* login */}
             <div className=" hidden md:flex md:w-10/12 md:justify-end ">
               <Link href="/login">
@@ -46,20 +53,13 @@ export default async function Home() {
             <div>
               <Logo />
             </div>
-
             {/* heading */}
             <h1 className=" w-11/12 text-center text-3xl font-semibold md:text-4xl md:font-bold">
               Find the best restaurants, cafés, and bars
             </h1>
 
             {/* search section */}
-            <div className="text-black flex flex-col md:flex-row">
-              {/* location autocomplete */}
-              <div></div>
-
-              {/* restaurant autocomplete */}
-              <div></div>
-            </div>
+            <SearchItems />
           </div>
         </div>
       </div>
@@ -74,8 +74,8 @@ export default async function Home() {
             Discover restaurants by type of meal
           </p>
 
-          {/* cuisines */}
-          <div className=" grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
+          {/* mealtypes */}
+          <section className=" grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
             {mealtypes.map((mealtype) => (
               <Mealtype
                 key={mealtype.id}
@@ -84,7 +84,7 @@ export default async function Home() {
                 imageURL = {mealtype.image}
                 />
             ))}
-          </div>
+          </section>
         </div>
       </main>
     </div>

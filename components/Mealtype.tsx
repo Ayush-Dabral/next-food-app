@@ -24,17 +24,17 @@ const Mealtype = ({ key, mealtype, content, imageURL }: mealtypes) => {
     <Link
     href="/login"
     key={key}>
-    <div key={key} className="h-40  flex flex-row shadow-lg hover:bg-slate-100 hover:shadow-2xl">
-      <div className=" aspect-square">
+    <div className="sm:h-40 flex flex-row shadow-lg hover:bg-slate-100 hover:shadow-2xl">
+      <div className=" w-1/3 sm:w-auto sm:h-full sm:aspect-square">
         <Image
           src={`/${imageURL}`}
           width={471}
           height={320}
-          className=" aspect-square object-cover  object-center"
+          className="h-full sm:h-auto aspect-square object-cover  object-center"
           alt={`Cover photo of ${mealtype}`}
         />
       </div>
-      <div className=" flex flex-col justify-center">
+      <div className=" w-2/3 sm:w-auto sm:h-full flex flex-col justify-center">
         <h3 className=" w-10/12 mx-auto text-myHeadings text-lg font-semibold">{mealtype}</h3>
         <p className=" w-10/12 mx-auto text-myDescriptions text-sm">{content}</p>
       </div>
