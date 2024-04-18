@@ -1,13 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ComboboxDemo } from "./Combobox";
+import { LocationCombobox } from "./Combobox";
 
-const LocationAutocomplete = () => {
-    const [location, setlocation] = useState("location")
+const LocationAutocomplete = ({locationList}: any) => {
     return ( 
-        <div>
-            <ComboboxDemo search="location" location={location} />
+        <div className="text-black">
+            <LocationCombobox search="location" locationList = {locationList} />
         </div>
      );
 }

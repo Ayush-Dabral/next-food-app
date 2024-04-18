@@ -13,7 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface mealtypes {
-  key: number;
+  key: string;
   mealtype: string;
   content: string;
   imageURL: string;

@@ -1,8 +1,12 @@
+export type Location = {
+    id: string,
+    location: string,
+    city_id: string
+};
+
 export type Mealtype = {
-    id: number;
+    id: string;
     mealtype: string;
     content: string;
     image: string;
 };
-
-export type Location = {location: string};

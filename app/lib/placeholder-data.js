@@ -1053,60 +1053,20 @@ const cityList = [
 
 const locations = [
   {
-      "_id": "1",
-      "name": "ShalimarBhagh, Delhi",
-      "city_id": "1",
-      "location_id": "1",
-      "country_name": "India"
+      "name": "Pathri Bagh, Dehradun",
+      "city": "Dehra dun",
   },
   {
-      "_id": "2",
-      "name": "Janpat, Delhi",
-      "city_id": "1",
-      "location_id": "2",
-      "country_name": "India"
+    "name": "Pitampura, New Delhi",
+    "city": "Delhi"
   },
   {
-      "_id": "3",
-      "name": "MSP, Delhi",
-      "city_id": "1",
-      "location_id": "3",
-      "country_name": "India"
+    "name": "Ashok Vihar Phase 2, Delhi",
+    "city": "Delhi"
   },
   {
-      "_id": "4",
-      "name": "MSP, Pune",
-      "city_id": "2",
-      "location_id": "4",
-      "country_name": "India"
-  },
-  {
-      "_id": "5",
-      "name": "Anand Vihar, Delhi",
-      "city_id": "1",
-      "location_id": "5",
-      "country_name": "India"
-  },
-  {
-      "_id": "6",
-      "name": "Mahadevapura, Bangalore",
-      "city_id": "3",
-      "location_id": "5",
-      "country_name": "India"
-  },
-  {
-      "_id": "7",
-      "name": "Anna Nagar, Chennai",
-      "city_id": "4",
-      "location_id": "5",
-      "country_name": "India"
-  },
-  {
-      "_id": "8",
-      "name": "Thane, Mumbai",
-      "city_id": "5",
-      "location_id": "5",
-      "country_name": "India"
+    "name": "Borivali West, Mumbai",
+    "city": "Mumbai"
   }
 ]
 

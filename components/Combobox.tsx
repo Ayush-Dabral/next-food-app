@@ -20,36 +20,14 @@ import {
 } from "@/components/ui/popover";
 import { useAppDispatch } from "@/lib/hooks";
 import { inputHandler } from "@/lib/features/location/locationSlice";
-
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-];
+import { Location } from "@/lib/definitions";
 
 interface comboboxx {
   search: string;
-  location: string;
+  locationList: any;
 }
 
-export function ComboboxDemo({ search, location }: comboboxx) {
+export function LocationCombobox({ search, locationList }: comboboxx) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const dispatch = useAppDispatch();
@@ -58,41 +36,44 @@ export function ComboboxDemo({ search, location }: comboboxx) {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
+          variant="secondary"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className={cn(
+            "w-[200px] justify-between",
+            value === "" ? "text-[#636F88] font-normal" : " text-myHeadings"
+          )}
         >
           {value
-            ? frameworks.find((framework) => framework.value === value)?.label
-            : `Select ${search}`}
+            ? locationList.find((location:Location) => location.location === value)?.location
+            : `Please select a ${search}`}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <CommandInput placeholder={`Search ${search}...`} />
-          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandEmpty>No location found.</CommandEmpty>
           <CommandGroup>
-            <CommandList>
-              {frameworks.map((framework) => (
+            <CommandList className="h-[150px] overflow-y-scroll overscroll-contain scroll-smooth">
+              {locationList.map((location: Location) => (
                 <CommandItem
-                  key={framework.value}
-                  value={framework.value}
+                  key={location.id}
+                  value={location.location}
                   onSelect={(currentValue) => {
+                    console.log(currentValue);
+                    console.log(value);
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
-                    if (location != "") {
-                      dispatch(inputHandler(currentValue));
-                    }
+                    dispatch(inputHandler(currentValue));
                   }}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === framework.value ? "opacity-100" : "opacity-0"
+                      value === location.location ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {framework.label}
+                  {location.location}
                 </CommandItem>
               ))}
             </CommandList>
@@ -102,3 +83,57 @@ export function ComboboxDemo({ search, location }: comboboxx) {
     </Popover>
   );
 }
+
+// export function RestaurantCombobox({ search, List, location }: comboboxx) {
+//   const [open, setOpen] = React.useState(false);
+//   const [value, setValue] = React.useState("");
+//   const dispatch = useAppDispatch();
+
+//   return (
+//     <Popover open={open} onOpenChange={setOpen}>
+//       <PopoverTrigger asChild>
+//         <Button
+//           variant="outline"
+//           role="combobox"
+//           aria-expanded={open}
+//           className="w-[200px] justify-between"
+//         >
+//           {value
+//             ? frameworks.find((framework) => framework.value === value)?.label
+//             : `Select ${search}`}
+//         </Button>
+//       </PopoverTrigger>
+//       <PopoverContent className="w-[200px] p-0">
+//         <Command>
+//           <CommandInput placeholder={`Search ${search}...`} />
+//           <CommandEmpty>No framework found.</CommandEmpty>
+//           <CommandGroup>
+//             <CommandList>
+//               {frameworks.map((framework) => (
+//                 <CommandItem
+//                   key={framework.value}
+//                   value={framework.value}
+//                   onSelect={(currentValue) => {
+//                     setValue(currentValue === value ? "" : currentValue);
+//                     setOpen(false);
+//                     if (location != "") {
+//                       dispatch(inputHandler(currentValue));
+//                     }
+//                   }}
+//                 >
+//                   <Check
+//                     className={cn(
+//                       "mr-2 h-4 w-4",
+//                       value === framework.value ? "opacity-100" : "opacity-0"
+//                     )}
+//                   />
+//                   {framework.label}
+//                 </CommandItem>
+//               ))}
+//             </CommandList>
+//           </CommandGroup>
+//         </Command>
+//       </PopoverContent>
+//     </Popover>
+//   );
+// }

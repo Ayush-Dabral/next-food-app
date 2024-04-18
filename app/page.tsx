@@ -2,19 +2,13 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Logo from "@/components/logo";
-import { fetchMealtypes } from "@/lib/data";
+import { fetchLocations, fetchMealtypes } from "@/lib/data";
 import Mealtype from "@/components/Mealtype";
-import LocationAutocomplete from "@/components/LocationAutocomplete";
-import RestaurantAutocomplete from "@/components/RestaurantAutocomplete";
-import { useSelector } from "react-redux";
-import { LocationState } from "@/lib/features/location/locationSlice";
 import SearchItems from "@/components/SearchItems";
-
-
-
 
 export default async function Home() {
   const mealtypes = await fetchMealtypes();
+  const locations = await fetchLocations();
 
   return (
     <div className="w-full">
@@ -33,6 +27,7 @@ export default async function Home() {
           className="flex w-full h-[480px] object-cover object-center absolute md:hidden"
           alt="Screenshot of the dashboard project showing mobile version"
         />
+        
         <div className="relative bg-gradient-to-t from-red-950 to-transparent w-full h-full">
           <div className=" w-full h-full my-auto flex flex-col items-center justify-evenly">
             {/* login */}
@@ -59,7 +54,8 @@ export default async function Home() {
             </h1>
 
             {/* search section */}
-            <SearchItems />
+            <SearchItems locationsList = {locations} />
+            
           </div>
         </div>
       </div>

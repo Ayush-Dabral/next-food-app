@@ -93,28 +93,43 @@ async function seedUsers(client) {
 
 async function seedLocations(client) {
   try {
+    // Ensure the "uuid-ossp" extension is available
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-    // Create the "invoices" table if it doesn't exist
-    const createTable = await client.sql`
-    CREATE TABLE IF NOT EXISTS locations (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    state_id UUID REFERENCES states(id)
-  );
-`;
 
+    // Create the "locations" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS locations (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        location VARCHAR(255) NOT NULL,
+        city_id UUID REFERENCES cities(id)
+      )
+    `;
+    
     console.log(`Created "locations" table`);
 
-    // Insert data into the "invoices" table
-    const insertedLocations = await Promise.all(
-      locations.map(
-        (invoice) => client.sql`
-        INSERT INTO locations (id, name, city_id, location_id, country_name)
-        VALUES (${invoice['_id']}, ${invoice.name}, ${invoice.city_id}, ${invoice.location_id}, ${invoice.country_name})
-        ON CONFLICT (id) DO NOTHING;
-      `,
-      ),
-    );
+    // Insert data into the "locations" table
+    const insertedLocations = [];
+    for (const location of locations) {
+      // Fetch the city_id synchronously
+      const cityIdQueryResult = await client.sql`
+        SELECT id FROM cities WHERE city = ${location.city}
+      `.rows;
+      
+      // Check if any result was returned
+      if (cityIdQueryResult && cityIdQueryResult.length > 0) {
+        const cityId = cityIdQueryResult[0].id;
+
+        // Insert the location
+        const insertLocationQuery = await client.sql`
+          INSERT INTO locations (location, city_id)
+          VALUES (${location.name}, ${cityId})
+          ON CONFLICT (id) DO NOTHING
+        `;
+        insertedLocations.push(insertLocationQuery);
+      } else {
+        console.log(`City "${location.city}" not found. Skipping location insertion.`);
+      }
+    }
 
     console.log(`Seeded ${insertedLocations.length} locations`);
 
@@ -123,10 +138,12 @@ async function seedLocations(client) {
       locations: insertedLocations,
     };
   } catch (error) {
-    console.error('Error seeding invoices:', error);
+    console.error('Error seeding locations:', error);
     throw error;
   }
 }
+
+
 
 async function seedRestaurants(client) {
   try {
@@ -274,7 +291,7 @@ async function hi(client) {
 async function main() {
   const client = await db.connect();
   
-  await seedMealtype(client);
+  await seedLocations(client);
 
   await client.end();
 }
