@@ -5,7 +5,7 @@ import { LocationCombobox } from "./Combobox";
 
 const LocationAutocomplete = ({locationList}: any) => {
     return ( 
-        <div className="text-black flex justify-center">
+        <div className="flex justify-center ">
             <LocationCombobox search="location" locationList = {locationList} />
         </div>
      );

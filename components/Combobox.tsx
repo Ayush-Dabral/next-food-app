@@ -43,7 +43,7 @@ export function LocationCombobox({ search, locationList }: locationCombobox) {
           role="combobox"
           aria-expanded={open}
           className={cn(
-            "w-[200px] justify-start md:w-[250px]",
+            "w-[200px] flex justify-start xs:w-[350px] md:w-[250px]",
             value === "" ? "text-[#636F88] font-normal" : " text-myHeadings"
           )}
         >
@@ -54,7 +54,7 @@ export function LocationCombobox({ search, locationList }: locationCombobox) {
             : `Please select a ${search}`}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0 md:w-[250px]">
+      <PopoverContent className="w-[200px] p-0 xs:w-[350px] md:w-[250px]">
         <Command>
           <CommandInput placeholder={`Search ${search}...`} />
           <CommandEmpty>No location found.</CommandEmpty>
@@ -102,7 +102,7 @@ export function RestaurantCombobox({ restaurantList }: any) {
           role="combobox"
           aria-expanded={open}
           className={cn(
-            "w-[200px] justify-start md:w-[350px]",
+            "w-[200px] flex justify-start xs:w-[350px] md:w-[350px]",
             value === "" ? "text-[#636F88] font-normal" : " text-myHeadings"
           )}
         >
@@ -114,10 +114,10 @@ export function RestaurantCombobox({ restaurantList }: any) {
             : `Select Restaurant`}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0 md:w-[350px]">
+      <PopoverContent className="w-[200px] p-0 xs:w-[350px] md:w-[350px]">
         <Command>
           <CommandInput placeholder={`Search Restaurants...`} />
-          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandEmpty>No restaurant found.</CommandEmpty>
           <CommandGroup>
             <CommandList className="h-[150px] overflow-y-scroll overscroll-contain scroll-smooth">
               {selectedLocation === "" && restaurantList.map((restaurant: Restaurant) => (

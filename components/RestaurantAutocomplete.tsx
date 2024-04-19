@@ -4,7 +4,7 @@ import { RestaurantCombobox } from "./Combobox";
 
 const RestaurantAutocomplete = ({restaurantList}: any) => {
     return ( 
-        <div className=" w-full">
+        <div className=" flex justify-center">
             <RestaurantCombobox restaurantList={restaurantList}/>
         </div>
      );

@@ -6,14 +6,14 @@ import { Location } from "@/lib/definitions";
 
 const SearchItems = ({locationsList, restaurantList}: any) => {
   return (
-    <div className="text-black flex flex-col justify-center gap-4 md:flex-row">
+    <div className="w-full text-black flex flex-col justify-center gap-4 md:flex-row md:w-auto">
       {/* location autocomplete */}
-      <div>
+      <div className="w-full">
         <LocationAutocomplete locationList={locationsList} />
       </div>
 
       {/* restaurant autocomplete */}
-      <div>
+      <div className="w-full">
         <RestaurantAutocomplete restaurantList = {restaurantList} />
       </div>
     </div>
