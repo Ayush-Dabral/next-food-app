@@ -19,7 +19,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { inputHandler } from "@/lib/features/location/locationSlice";
 import { Location, Restaurant } from "@/lib/definitions";
 
@@ -32,6 +32,8 @@ export function LocationCombobox({ search, locationList }: locationCombobox) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const dispatch = useAppDispatch();
+  const selectedLocation = useAppSelector((state) => state.location.value)
+  console.log(selectedLocation)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -63,11 +65,10 @@ export function LocationCombobox({ search, locationList }: locationCombobox) {
                   key={location.id}
                   value={location.location}
                   onSelect={(currentValue) => {
-                    console.log(currentValue);
-                    console.log(value);
+                    
+                    dispatch(inputHandler(currentValue === value ? "" : currentValue));
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
-                    dispatch(inputHandler(currentValue));
                   }}
                 >
                   <Check
@@ -90,6 +91,7 @@ export function LocationCombobox({ search, locationList }: locationCombobox) {
 export function RestaurantCombobox({ restaurantList }: any) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+  const selectedLocation = useAppSelector((state) => state.location.value)
 
   return (
     
@@ -118,7 +120,7 @@ export function RestaurantCombobox({ restaurantList }: any) {
           <CommandEmpty>No framework found.</CommandEmpty>
           <CommandGroup>
             <CommandList className="h-[150px] overflow-y-scroll overscroll-contain scroll-smooth">
-              {restaurantList.map((restaurant: Restaurant) => (
+              {selectedLocation === "" && restaurantList.map((restaurant: Restaurant) => (
                 <CommandItem
                   key={restaurant.id}
                   value={restaurant.restaurant_name}
@@ -139,6 +141,33 @@ export function RestaurantCombobox({ restaurantList }: any) {
                   </div>
                 </CommandItem>
               ))}
+              {selectedLocation !== "" && restaurantList.map((restaurant: Restaurant) => {
+                if(restaurant.locality.toLowerCase().includes(selectedLocation.toLowerCase())) {
+                  return (
+                <CommandItem
+                  key={restaurant.id}
+                  value={restaurant.restaurant_name}
+                  onSelect={(currentValue) => {
+                    setValue(currentValue === value ? "" : currentValue);
+                    setOpen(false);
+                  }}
+                >
+                  
+                  <Avatar className="mx-2">
+                    <AvatarImage className=" object-cover" src="/assets\food-avatar.png" />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+
+                  <div className=" w-full mx-auto flex flex-col">
+                    <h4 className=" w-11/12 mx-auto text-myHeadings font-bold">{restaurant.restaurant_name}</h4>
+                    <p className=" w-11/12 mx-auto  text-myDescriptions text-xs">{restaurant.locality}</p>
+                  </div>
+                </CommandItem>
+              )}
+              else {
+                return null;
+              }
+              })}
             </CommandList>
           </CommandGroup>
         </Command>
