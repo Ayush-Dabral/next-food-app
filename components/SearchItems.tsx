@@ -2,9 +2,9 @@
 
 import LocationAutocomplete from "./LocationAutocomplete";
 import RestaurantAutocomplete from "./RestaurantAutocomplete";
-import { Location } from "@/lib/definitions";
+import { Location, Restaurant } from "@/lib/definitions";
 
-const SearchItems = ({locationsList, restaurantList}: any) => {
+const SearchItems = ({locationsList, restaurantList}: {locationsList:Array<Location>, restaurantList:Array<Restaurant>}) => {
   return (
     <div className="w-full text-black flex flex-col justify-center gap-4 md:flex-row md:w-auto">
       {/* location autocomplete */}

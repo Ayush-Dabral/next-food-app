@@ -90,7 +90,7 @@ export function LocationCombobox({ search, locationList }: locationCombobox) {
   );
 }
 
-export function RestaurantCombobox({ restaurantList }: any) {
+export function RestaurantCombobox({ restaurantList }: { restaurantList:Array<Restaurant> }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const selectedLocation = useAppSelector((state) => state.location.value);
