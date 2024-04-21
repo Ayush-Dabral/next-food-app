@@ -1,10 +1,11 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Logo from "@/components/logo";
+import {Logo} from "@/components/logo";
 import { fetchLocations, fetchMealtypes, fetchRestaurants } from "@/lib/data";
-import Mealtype from "@/components/Mealtype";
-import SearchItems from "@/components/SearchItems";
+import Mealtype from "@/components/homepage/Mealtype";
+import LoginButton from "@/components/auth/login-button";
+import SearchItems from "@/components/homepage/SearchItems";
 
 export default async function Home() {
   const mealtypes = await fetchMealtypes();
@@ -12,7 +13,7 @@ export default async function Home() {
   const restaurants = await fetchRestaurants();
 
   return (
-    <div className="w-full">
+    <div className="w-full text-white">
       <div className="w-full h-[480px]">
         <Image
           src="/assets/hero-desktop.png"
@@ -33,11 +34,11 @@ export default async function Home() {
           <div className=" w-full h-full my-auto flex flex-col items-center justify-evenly">
             {/* login */}
             <div className=" hidden md:flex md:w-10/12 md:justify-end ">
-              <Link href="/login">
+              <LoginButton>
                 <Button variant="ghost" size="lg">
                   Login
                 </Button>
-              </Link>
+              </LoginButton>
               <Link href="/signin">
                 <Button variant="ghost" size="lg" className="border-2">
                   Create an account
@@ -62,7 +63,7 @@ export default async function Home() {
       </div>
 
       {/* main */}
-      <main className=" w-full my-9 md:my-12">
+      <main className=" w-full py-9 md:py-12">
         <div className="w-10/12 mx-auto flex flex-col">
           <h2 className=" font-bold text-2xl text-myHeadings md:text-3xl">
             Quick Searches

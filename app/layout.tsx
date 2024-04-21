@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <StoreProvider>
-        <body className={`${poppins.className} antialiased text-white`}>{children}</body>
+        <body className={`${poppins.className} antialiased `}>{children}</body>
       </StoreProvider>
     </html>
   );

@@ -6,7 +6,7 @@ export default function RestaurantLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="text-black">
+    <div>
       {/* Include shared UI here e.g. a header or sidebar */}
       <Navbar />
 
