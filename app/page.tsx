@@ -6,6 +6,7 @@ import { fetchLocations, fetchMealtypes, fetchRestaurants } from "@/lib/data";
 import Mealtype from "@/components/homepage/Mealtype";
 import LoginButton from "@/components/auth/login-button";
 import SearchItems from "@/components/homepage/SearchItems";
+import RegisterButton from "@/components/auth/register-button";
 
 export default async function Home() {
   const mealtypes = await fetchMealtypes();
@@ -39,11 +40,11 @@ export default async function Home() {
                   Login
                 </Button>
               </LoginButton>
-              <Link href="/signin">
+              <RegisterButton>
                 <Button variant="ghost" size="lg" className="border-2">
                   Create an account
                 </Button>
-              </Link>
+              </RegisterButton>
             </div>
 
             {/* logo */}
