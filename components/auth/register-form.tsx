@@ -58,7 +58,7 @@ export const RegisterForm = () => {
       showSocial
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         <FormField
             control={form.control}
             name="name"
@@ -100,7 +100,7 @@ export const RegisterForm = () => {
           />
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button type="submit" className="w-full">Login</Button>
+          <Button type="submit" className="w-full">Create an account</Button>
         </form>
       </Form>
     </CardWrapper>

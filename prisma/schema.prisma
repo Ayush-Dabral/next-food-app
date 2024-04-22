@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model cities {
+  id        String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  city      String      @db.VarChar(50)
+  state     String      @db.VarChar(50)
+  locations locations[]
+}
+
+model cuisines {
+  id            String       @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  cuisine       String       @db.VarChar(255)
+  restaurant_id String?      @db.Uuid
+  restaurants   restaurants? @relation(fields: [restaurant_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model locations {
+  id       String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  location String  @db.VarChar(255)
+  city_id  String? @db.Uuid
+  cities   cities? @relation(fields: [city_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model mealtypes {
+  id                   String                 @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  mealtype             String                 @db.VarChar(30)
+  content              String
+  image                String                 @db.VarChar(50)
+  restaurant_mealtypes restaurant_mealtypes[]
+}
+
+model restaurant_mealtypes {
+  id            String       @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  mealtype_id   String?      @db.Uuid
+  restaurant_id String?      @db.Uuid
+  mealtypes     mealtypes?   @relation(fields: [mealtype_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  restaurants   restaurants? @relation(fields: [restaurant_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model restaurants {
+  id                   String                 @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  restaurant_name      String                 @db.VarChar(255)
+  locality             String                 @db.VarChar(255)
+  thumb                String                 @db.VarChar(255)
+  cost                 Int
+  contact_number       String?                @db.VarChar(255)
+  address              String
+  cuisines             cuisines[]
+  restaurant_mealtypes restaurant_mealtypes[]
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  accounts      Account[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
+}
