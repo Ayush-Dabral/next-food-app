@@ -9,5 +9,5 @@ export default auth((req) => {
  
 // Optionally, don't invoke Middleware on some paths
 export const config = {
-    matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)', 'favicon.io'],
+    matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
 }

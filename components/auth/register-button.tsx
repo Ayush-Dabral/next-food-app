@@ -16,7 +16,7 @@ const RegisterButton = ({
     const router = useRouter();
 
     const clickHandler = () => {
-        router.push("/signup")
+        router.push("/auth/signup")
     }
 
     if(mode === "modal") {
