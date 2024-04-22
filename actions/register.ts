@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 
-import { RegisterSchema } from "@/models";
+import { RegisterSchema } from "@/schemas/index";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
     const validatedFields = RegisterSchema.safeParse(values);
