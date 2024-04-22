@@ -4,7 +4,7 @@ import authConfig from "./auth.config"
 import { db } from "./lib/db"
  
 export const { 
-  handlers: {GET, POST},
+  handlers,
   auth,
   signIn,
   signOut
