@@ -6,6 +6,7 @@ const SettingsPage = async () => {
 
     const session = await auth();
     // const router = useRouter();
+    
 
     return ( 
         <div>

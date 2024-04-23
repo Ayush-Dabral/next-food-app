@@ -8,6 +8,11 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+enum UserRole {
+  ADMIN
+  USER
+}
+
 model cities {
   id        String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   city      String      @db.VarChar(50)
@@ -64,6 +69,7 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?
+  role          UserRole @default(USER)
   accounts      Account[]
 }
 
