@@ -1,0 +1,7 @@
+{
+    "builds": [
+      { "src": "prisma/schema.prisma", "use": "@prisma/vercel-builder" },
+      { "src": "package.json", "use": "@vercel/node" }
+    ]
+  }
+  
