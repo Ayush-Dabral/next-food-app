@@ -1,11 +1,9 @@
 
 import { auth, signOut } from "@/auth";
-import { useRouter } from "next/navigation";
 
 const SettingsPage = async () => {
 
     const session = await auth();
-    // const router = useRouter();
     
 
     return ( 
@@ -13,7 +11,7 @@ const SettingsPage = async () => {
             {JSON.stringify(session)}
             <form action={async () => {
                 "use server"
-                // router.push("/")
+                
                 await signOut();
             }}>
                 <button type="submit">Signout</button>
