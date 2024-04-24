@@ -3,8 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -24,9 +23,11 @@ import { FormSuccess } from "../form-success";
 import { useState, useTransition } from "react";
 import { login } from "@/actions/login";
 
-var eye = false;
+
 
 export const LoginForm = () => {
+  const searchParams = useSearchParams();
+  const urlError = searchParams?.get("error") === "OAuthAccountNotLinked"? "Use the same login method as registration!" :""
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [sucesss, setSucesss] = useState<string | undefined>("");
@@ -39,9 +40,7 @@ export const LoginForm = () => {
     },
   });
 
-  function handleClick() {
-    eye = !eye;
-  }
+  
 
   const onSubmit = (values: z.infer<typeof loginSchema>) => {
     setError("");
@@ -50,7 +49,7 @@ export const LoginForm = () => {
     startTransition(() => {
       login(values).then((data) => {
         setError(data?.error);
-        setSucesss(data.success);
+        setSucesss(data?.success);
       });
     });
   };
@@ -93,25 +92,19 @@ export const LoginForm = () => {
                     <div className="flex items-center border-[1px] rounded-md focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-2">
                       <Input
                         placeholder="••••••"
-                        type={eye ? "text" : "password"}
+                        
                         className="border-0 focus-visible:ring-0 focus-visible:shadow-none focus-visible:ring-offset-0"
                         {...field}
                         disabled={isPending}
                       />
-                      <button
-                        onClick={handleClick}
-                        className="rounded-full h-7 w-7"
-                      >
-                        {eye && <FaEye className="text-black" />}
-                        {!eye && <FaEyeSlash />}
-                      </button>
+                      
                     </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormError message={error} />
+            <FormError message={error || urlError} />
             <FormSuccess message={sucesss} />
             <Button type="submit" className="w-full" disabled={isPending}>
               Login
