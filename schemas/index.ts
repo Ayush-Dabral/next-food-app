@@ -9,6 +9,8 @@ export const loginSchema = z.object({
   password: z.string().min(1,{
     message: "Password is required"
   })
+}).refine(data => {
+  console.log(data.email)
 });
 
 export const RegisterSchema = z.object({

@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Input, PasswordInput } from "@/components/ui/input";
 import { loginSchema } from "@/schemas/index";
 
 import { CardWrapper } from "./card-wrapper";
@@ -90,14 +90,10 @@ export const LoginForm = () => {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <div className="flex items-center border-[1px] rounded-md focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-2">
-                      <Input
-                        placeholder="••••••"
-                        
-                        className="border-0 focus-visible:ring-0 focus-visible:shadow-none focus-visible:ring-offset-0"
+                      <PasswordInput
                         {...field}
                         disabled={isPending}
                       />
-                      
                     </div>
                   </FormControl>
                   <FormMessage />

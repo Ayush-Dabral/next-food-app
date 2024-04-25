@@ -16,14 +16,13 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { Input, PasswordInput } from "../ui/input";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { register } from "@/actions/register";
 import { useState, useTransition } from "react";
 
 export const RegisterForm = () => {
-
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -33,7 +32,7 @@ export const RegisterForm = () => {
     defaultValues: {
       email: "",
       password: "",
-      name: ""
+      name: "",
     },
   });
 
@@ -42,13 +41,12 @@ export const RegisterForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      register(values)
-      .then((data) => {
+      register(values).then((data) => {
         setError(data?.error);
         setSuccess(data?.success);
-      })
-    })
-  }
+      });
+    });
+  };
 
   return (
     <CardWrapper
@@ -59,14 +57,14 @@ export const RegisterForm = () => {
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-        <FormField
+          <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ayush Dabral" type="text" {...field} />
+                  <Input placeholder="John Doe" type="text" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -79,7 +77,11 @@ export const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="ayush.dabral@example.com" type="email" {...field} />
+                  <Input
+                    placeholder="john.doe@example.com"
+                    type="email"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -92,7 +94,9 @@ export const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="******" type="password" {...field} />
+                  <div className="flex items-center border-[1px] rounded-md focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-2">
+                    <PasswordInput {...field} disabled={isPending} />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -100,7 +104,9 @@ export const RegisterForm = () => {
           />
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button type="submit" className="w-full">Create an account</Button>
+          <Button type="submit" className="w-full">
+            Create an account
+          </Button>
         </form>
       </Form>
     </CardWrapper>
