@@ -33,4 +33,5 @@ export default { providers: [
             return null;
         }
     })
-] } satisfies NextAuthConfig
+],
+secret: process.env.AUTH_SECRET } satisfies NextAuthConfig
