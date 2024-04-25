@@ -9,6 +9,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: "/auth/login",
     error: "/auth/error"
   },
+  secret: process.env.JWT_SECRET,
   events: {
     async linkAccount({ user }) {
       await db.user.update({
@@ -48,6 +49,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       token.role = existingUser.role;
       return token;
     },
+    
   },
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
