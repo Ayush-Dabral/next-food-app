@@ -3,11 +3,12 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import authConfig from "./auth.config";
 import { db } from "./lib/db";
 import { getUserById } from "./lib/data";
+import { getTwoFactorConfirmationByUserId } from "./lib/two-factor-confirmation";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: "/auth/login",
-    error: "/auth/error"
+    error: "/auth/error",
   },
   events: {
     async linkAccount({ user }) {
@@ -18,12 +19,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
   },
   callbacks: {
-    async signIn({user, account}) {
-      if(account?.provider !== "credentials") return true;
-      if(user.id) {
+    async signIn({ user, account }) {
+      if (account?.provider !== "credentials") return true;
+      if (user.id) {
         const existingUser = await getUserById(user.id);
 
-        if(!existingUser?.emailVerified) return false;
+        if (!existingUser?.emailVerified) return false;
+        if (existingUser?.isTwoFactorEnabled) {
+          const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
+            existingUser.id
+          );
+          if (!twoFactorConfirmation) return false;
+          await db.twoFactorConfirmation.delete({
+            where: { id: twoFactorConfirmation.id },
+          });
+        }
       }
       return true;
     },
@@ -48,7 +58,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       token.role = existingUser.role;
       return token;
     },
-    
   },
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },

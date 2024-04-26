@@ -1,12 +1,10 @@
 "use client";
 
 import { CardWrapper } from "./card-wrapper";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { RegisterSchema } from "@/schemas";
-
 import {
   Form,
   FormControl,
@@ -64,7 +62,12 @@ export const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="John Doe" type="text" {...field} />
+                  <Input
+                    placeholder="John Doe"
+                    type="text"
+                    {...field}
+                    disabled={isPending}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -81,6 +84,7 @@ export const RegisterForm = () => {
                     placeholder="john.doe@example.com"
                     type="email"
                     {...field}
+                    disabled={isPending}
                   />
                 </FormControl>
                 <FormMessage />
@@ -104,7 +108,7 @@ export const RegisterForm = () => {
           />
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={isPending}>
             Create an account
           </Button>
         </form>
