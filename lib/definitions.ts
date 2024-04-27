@@ -17,5 +17,6 @@ export type Restaurant = {
   locality: string;
   thumb: string;
   cost: number;
+  contact_number: number;
   address: string;
 };

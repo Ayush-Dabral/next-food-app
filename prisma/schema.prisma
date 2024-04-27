@@ -56,7 +56,7 @@ model restaurants {
   locality             String                 @db.VarChar(255)
   thumb                String                 @db.VarChar(255)
   cost                 Int
-  contact_number       String?                @db.VarChar(255)
+  contact_number       Int                
   address              String
   cuisines             cuisines[]
   restaurant_mealtypes restaurant_mealtypes[]
