@@ -33,8 +33,6 @@ export function LocationCombobox({ search, locationList }: locationCombobox) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const dispatch = useAppDispatch();
-  const selectedLocation = useAppSelector((state) => state.location.value);
-  console.log(selectedLocation);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

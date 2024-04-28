@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "../ui/button";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -22,15 +14,14 @@ interface mealtypes {
 const Mealtype = ({ key, mealtype, content, imageURL }: mealtypes) => {
   return (
     <Link
-    href={`/${mealtype}`}
+    href={`/${mealtype}/1`}
     key={key}>
     <div className="sm:h-40 flex flex-row shadow-lg hover:bg-slate-100 hover:shadow-2xl">
-      <div className=" w-1/3 sm:w-auto sm:h-full sm:aspect-square">
+      <div className=" w-1/3 sm:w-auto sm:h-full aspect-square relative">
         <Image
           src={`/${imageURL}`}
-          width={471}
-          height={320}
-          className="h-full sm:h-auto aspect-square object-cover  object-center"
+          fill
+          className="aspect-square object-cover  object-center"
           alt={`Cover photo of ${mealtype}`}
         />
       </div>

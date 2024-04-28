@@ -12,12 +12,12 @@ const Navbar = () => {
         </Link>
 
         <div className="flex items-center justify-end ">
-          <Link href="/login">
+          <Link href="/auth/login">
             <Button variant="ghost" size="sm">
               Login
             </Button>
           </Link>
-          <Link href="/signin">
+          <Link href="/auth/signup">
             <Button variant="ghost" size="sm" className="border-2">
               Create an account
             </Button>

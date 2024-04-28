@@ -1,7 +1,7 @@
 export type Location = {
   id: string;
   location: string;
-  city_id: string;
+  city_id: string | null;
 };
 
 export type Mealtype = {
