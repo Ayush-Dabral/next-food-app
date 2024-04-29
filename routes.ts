@@ -1,6 +1,7 @@
 export const publicRoutes = [
     "/",
-    "/auth/new-verification"
+    "/auth/new-verification",
+    "/[Mealtype]/[PageNumber]"
 ];
 
 export const authRoutes = [
