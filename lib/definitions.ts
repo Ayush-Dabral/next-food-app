@@ -20,3 +20,9 @@ export type Restaurant = {
   contact_number: number;
   address: string;
 };
+
+export type Cuisine = {
+  id: string;
+  cuisine: string;
+  restaurant_id: string | null;
+};

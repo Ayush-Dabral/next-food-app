@@ -2,6 +2,6 @@
 
 import { signOut } from "@/auth"
 
-export const logOut = async () => {
+export const logout = async () => {
     await signOut()
 }

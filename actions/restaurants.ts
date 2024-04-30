@@ -55,7 +55,10 @@ export const getRestaurantById = async (id: string) => {
     const restaurant = await db.restaurants.findUnique({
       where: { id: id },
     });
-    return restaurant;
+    const cuisines = await db.cuisines.findMany({
+      where: { restaurant_id: id }
+    })
+    return {restaurant: restaurant, cuisines:cuisines};
   } catch (error) {
     console.log(error);
     return null;

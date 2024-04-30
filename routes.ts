@@ -1,8 +1,9 @@
 export const publicRoutes = [
     "/",
     "/auth/new-verification",
-    "/[Mealtype]/[PageNumber]"
+    new RegExp("^/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$"), // Include dynamic route here
 ];
+
 
 export const authRoutes = [
     "/auth/login",
