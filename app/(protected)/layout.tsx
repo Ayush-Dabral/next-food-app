@@ -1,4 +1,5 @@
-import { SettingsNavbar } from "../_components/settings-navbar";
+import { SettingsNavbar } from "./_components/settings-navbar";
+
 
 const SettingsLayout = ({children}:{children: React.ReactNode}) => {
     return ( 
