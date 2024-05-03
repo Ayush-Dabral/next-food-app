@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { RegisterForm } from "./register-form";
 
 interface RegisterButtonProps {
     children: React.ReactNode;
@@ -20,7 +22,16 @@ const RegisterButton = ({
     }
 
     if(mode === "modal") {
-        <span>Todo:Implement modal</span>
+        return (
+            <Dialog>
+                <DialogTrigger asChild={asChild}>
+                    {children}
+                </DialogTrigger>
+                <DialogContent className="p-0 w-auto bg-transparent border-none">
+                    <RegisterForm />
+                </DialogContent>
+            </Dialog>
+        )
     }
 
     return ( 

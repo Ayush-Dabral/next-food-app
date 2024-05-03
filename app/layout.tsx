@@ -4,6 +4,7 @@ import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
+import { Toaster } from "@/components/ui/sonner";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -20,14 +21,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  const session = await auth()
+  const session = await auth();
 
   return (
     <html lang="en">
       <SessionProvider session={session}>
         <StoreProvider>
           <body className={`${poppins.className} antialiased `}>
+            <Toaster />
             {children}
           </body>
         </StoreProvider>
