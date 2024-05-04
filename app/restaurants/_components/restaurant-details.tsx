@@ -18,8 +18,6 @@ export const RestaurantDetails = ({
   const [currPage, setcurrPage] = useState("overview")
 
   if (!restaurant) return null; // Handle case when restaurant is null
-  console.log(usePathname())
-  
 
   return (
     <div className="w-full text-myHeadings md:w-10/12 md:mx-auto">

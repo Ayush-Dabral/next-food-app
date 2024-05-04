@@ -26,11 +26,11 @@ import Link from "next/link";
 
 export const LoginForm = () => {
   const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl")
   const urlError =
     searchParams?.get("error") === "OAuthAccountNotLinked"
       ? "Use the same login method as registration!"
       : "";
-
   const [showTwoFactor, setShowTwoFactor] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
@@ -49,7 +49,7 @@ export const LoginForm = () => {
     setSucesss("");
 
     startTransition(() => {
-      login(values)
+      login(values, callbackUrl)
         .then((data) => {
           if (data?.error) {
             form.reset();
