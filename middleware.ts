@@ -32,6 +32,7 @@ export default auth((req) => {
 
   if (!isLoggedIn && !isDynamicPublicRoute) {
     let callbackUrl = nextUrl.pathname;
+    console.log("ho")
     if(nextUrl.search) {
       callbackUrl += nextUrl.search;
     }
