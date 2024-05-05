@@ -8,13 +8,15 @@ const nextConfig = {
         port: '',
       },
       {
-        protocol: 'https',
-        hostname: '/assets',
-        port: '',
+        protocol: 'https', // Empty string matches both http and https protocols
+        hostname: 'nextjs-food-ordering-application.vercel.app', // Empty string matches any hostname
+        port: '', // Empty string matches any port
+        pathname: '/assets/**',
       }
     ],
   },
-  };
-  
-  export default nextConfig;
+};
+
+export default nextConfig;
+
   
