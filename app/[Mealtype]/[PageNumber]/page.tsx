@@ -53,7 +53,7 @@ const MealtypePage = async ({
                     <div className="w-2/6">
                       <div className=" w-4/6 max-w-28 mx-auto aspect-square rounded-lg relative">
                         <Image
-                          src="/assets/food-avatar.png"
+                          src={`/assets/food-avatar.png`}
                           alt="Restaurant Thumbnail"
                           fill
                           objectFit="cover"

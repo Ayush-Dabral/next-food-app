@@ -167,7 +167,7 @@ export function RestaurantCombobox({ restaurantList }: { restaurantList:Array<Re
                           setOpen(false);
                         }}
                       >
-                        <Link href={`/restaurants/id:${restaurant.id}`} className=" w-full flex">
+                        <Link href={`/restaurants/${restaurant.id}`} className=" w-full flex">
                           <Avatar className="mx-2">
                             <AvatarImage
                               className=" object-cover"

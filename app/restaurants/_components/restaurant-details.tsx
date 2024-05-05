@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Cuisine, Restaurant } from "@/lib/definitions";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 interface RestaurantDetailsProps {
