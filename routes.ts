@@ -1,5 +1,6 @@
 export const publicRoutes = [
     "/",
+    "/assets/",
     "/auth/new-verification",
     new RegExp("^/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$"), // Include dynamic route here
 ];

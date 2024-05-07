@@ -14,7 +14,7 @@ interface mealtypes {
 const Mealtype = ({ key, mealtype, content, imageURL }: mealtypes) => {
   return (
     <Link
-    href={`/${mealtype}/1`}
+    href={`/mealtypes/${mealtype}/1`}
     key={key}>
     <div className="sm:h-40 flex flex-row shadow-lg hover:bg-slate-100 hover:shadow-2xl">
       <div className=" w-1/3 sm:w-auto sm:h-full aspect-square relative">

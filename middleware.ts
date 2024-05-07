@@ -13,9 +13,7 @@ export default auth((req) => {
   const isDynamicPublicRoute = publicRoutes.some(route => {
     if (typeof route === "string") {
       return route === nextUrl.pathname;
-    } else if (route instanceof RegExp) {
-      return route.test(nextUrl.pathname);
-    }
+    } 
     return false;
   });
 
@@ -32,7 +30,6 @@ export default auth((req) => {
 
   if (!isLoggedIn && !isDynamicPublicRoute) {
     let callbackUrl = nextUrl.pathname;
-    console.log("ho")
     if(nextUrl.search) {
       callbackUrl += nextUrl.search;
     }
@@ -43,12 +40,22 @@ export default auth((req) => {
       nextUrl
     ));
   }
+  // if (!isLoggedIn && isDynamicPublicRoute) {
+  //   let callbackUrl = nextUrl.pathname;
+  //   if(nextUrl.search) {
+  //     callbackUrl += nextUrl.search;
+  //   }
+
+  //   const encodedCallbackUrl = encodeURIComponent(callbackUrl);
+  //   return Response.redirect(new URL(
+  //     `/auth/login?callbackUrl=${encodedCallbackUrl}`,
+  //     nextUrl
+  //   ));
+  // }
 
   return;
 });
 
- 
-// Optionally, don't invoke Middleware on some paths
 export const config = {
-    matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+    matcher: ["/((?!api|_next/static|_next/image|favicon.ico|assets|restaurants|mealtypes).*)"],
 }

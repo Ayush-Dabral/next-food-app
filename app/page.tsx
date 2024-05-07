@@ -1,17 +1,19 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import {Logo} from "@/components/logo";
+import { Logo } from "@/components/logo";
 import { fetchLocations, fetchMealtypes, fetchRestaurants } from "@/lib/data";
 import Mealtype from "@/components/homepage/Mealtype";
 import LoginButton from "@/components/auth/login-button";
 import SearchItems from "@/components/homepage/SearchItems";
 import RegisterButton from "@/components/auth/register-button";
+import { currentUser } from "@/lib/auth";
+import { UserPagesButton } from "@/components/user-pages-button";
 
 export default async function Home() {
   const mealtypes = await fetchMealtypes();
   const locations = await fetchLocations();
   const restaurants = await fetchRestaurants();
+  const user = await currentUser();
 
   return (
     <div className="w-full text-white">
@@ -30,23 +32,33 @@ export default async function Home() {
           className="flex w-full h-[480px] object-cover object-center absolute md:hidden"
           alt="Screenshot of the dashboard project showing mobile version"
         />
-        
+
         <div className="relative bg-gradient-to-t from-red-950 to-transparent w-full h-full">
           <div className=" w-full h-full my-auto flex flex-col items-center justify-evenly">
             {/* login */}
             <div className=" hidden md:flex md:w-10/12 md:justify-end ">
-              <LoginButton>
-                <Button variant="ghost" size="lg">
-                  Login
-                </Button>
-              </LoginButton>
-              <RegisterButton>
-                <Button variant="ghost" size="lg" className="border-2">
-                  Create an account
-                </Button>
-              </RegisterButton>
+              {!user && (
+                <div>
+                  <LoginButton>
+                    <Button variant="ghost" size="lg">
+                      Login
+                    </Button>
+                  </LoginButton>
+                  <RegisterButton>
+                    <Button variant="ghost" size="lg" className="border-2">
+                      Create an account
+                    </Button>
+                  </RegisterButton>
+                </div>
+              )}
+              {
+                user && (
+                  <div>
+                    <UserPagesButton />
+                  </div>
+                )
+              }
             </div>
-
             {/* logo */}
             <div>
               <Logo />
@@ -57,8 +69,10 @@ export default async function Home() {
             </h1>
 
             {/* search section */}
-            <SearchItems locationsList = {locations} restaurantList = {restaurants} />
-            
+            <SearchItems
+              locationsList={locations}
+              restaurantList={restaurants}
+            />
           </div>
         </div>
       </div>
@@ -80,8 +94,8 @@ export default async function Home() {
                 key={mealtype.id}
                 mealtype={mealtype.mealtype}
                 content={mealtype.content}
-                imageURL = {mealtype.image}
-                />
+                imageURL={mealtype.image}
+              />
             ))}
           </section>
         </div>
