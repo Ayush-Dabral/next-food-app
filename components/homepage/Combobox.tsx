@@ -19,20 +19,22 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { inputHandler } from "@/lib/features/location/locationSlice";
 import { Location, Restaurant } from "@/lib/definitions";
 import Link from "next/link";
 
 interface locationCombobox {
   search: string;
   locationList: any;
+  setLocation: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export function LocationCombobox({ search, locationList }: locationCombobox) {
+export function LocationCombobox({
+  search,
+  locationList,
+  setLocation,
+}: locationCombobox) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
-  const dispatch = useAppDispatch();
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -64,9 +66,7 @@ export function LocationCombobox({ search, locationList }: locationCombobox) {
                   key={location.id}
                   value={location.location}
                   onSelect={(currentValue) => {
-                    dispatch(
-                      inputHandler(currentValue === value ? "" : currentValue)
-                    );
+                    setLocation(currentValue === value ? "" : currentValue);
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
                   }}
@@ -88,10 +88,15 @@ export function LocationCombobox({ search, locationList }: locationCombobox) {
   );
 }
 
-export function RestaurantCombobox({ restaurantList }: { restaurantList:Array<Restaurant> }) {
+export function RestaurantCombobox({
+  restaurantList,
+  selectedLocation,
+}: {
+  restaurantList: Array<Restaurant>;
+  selectedLocation: string;
+}) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
-  const selectedLocation = useAppSelector((state) => state.location.value);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -131,7 +136,10 @@ export function RestaurantCombobox({ restaurantList }: { restaurantList:Array<Re
                       setOpen(false);
                     }}
                   >
-                    <Link href={`/restaurants/${restaurant.id}`} className=" w-full flex">
+                    <Link
+                      href={`/restaurants/${restaurant.id}`}
+                      className=" w-full flex"
+                    >
                       <Avatar className="mx-2">
                         <AvatarImage
                           className=" object-cover"
@@ -167,7 +175,10 @@ export function RestaurantCombobox({ restaurantList }: { restaurantList:Array<Re
                           setOpen(false);
                         }}
                       >
-                        <Link href={`/restaurants/${restaurant.id}`} className=" w-full flex">
+                        <Link
+                          href={`/restaurants/${restaurant.id}`}
+                          className=" w-full flex"
+                        >
                           <Avatar className="mx-2">
                             <AvatarImage
                               className=" object-cover"

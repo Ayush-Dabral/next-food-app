@@ -3,10 +3,10 @@
 import { Restaurant } from "@/lib/definitions";
 import { RestaurantCombobox } from "./Combobox";
 
-const RestaurantAutocomplete = ({restaurantList}: {restaurantList:Array<Restaurant>}) => {
+const RestaurantAutocomplete = ({restaurantList, location}: {restaurantList:Array<Restaurant>, location: string}) => {
     return ( 
         <div className=" flex justify-center">
-            <RestaurantCombobox restaurantList={restaurantList}/>
+            <RestaurantCombobox restaurantList={restaurantList} selectedLocation={location} />
         </div>
      );
 }
